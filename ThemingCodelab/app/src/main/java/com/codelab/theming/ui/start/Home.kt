@@ -118,6 +118,38 @@ fun Home() {
 }
 
 @Composable
+fun HomeDark() {
+    val featured = remember { PostRepo.getFeaturedPost() }
+    val posts = remember { PostRepo.getPosts() }
+    JetnewsTheme(
+        isDarkTheme = true
+    ) {
+        Scaffold(
+            topBar = { AppBar() }
+        ) { innerPadding ->
+            LazyColumn(contentPadding = innerPadding) {
+                item {
+                    Header(stringResource(R.string.top))
+                }
+                item {
+                    FeaturedPost(
+                        post = featured,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+                item {
+                    Header(stringResource(R.string.popular))
+                }
+                items(posts) { post ->
+                    PostItem(post = post)
+                    Divider(startIndent = 72.dp)
+                }
+            }
+        }
+    }
+}
+
+@Composable
 private fun AppBar() {
     TopAppBar(
         navigationIcon = {
@@ -143,7 +175,7 @@ fun Header(
         text = text,
         modifier = modifier
             .fillMaxWidth()
-            .background(Color.LightGray)
+//            .background(Color.LightGray)
             .semantics { heading() }
             .padding(horizontal = 16.dp, vertical = 8.dp)
     )
@@ -265,6 +297,21 @@ private fun FeaturedPostPreviewOld() {
 @Composable
 private fun HomePreview() {
     Home()
+}
+
+@Preview("Home • Dark")
+@Composable
+private fun HomeDarkPreview() {
+    HomeDark()
+}
+
+@Preview("Featured Post • Dark")
+@Composable
+private fun FeaturedPostDarkPreview() {
+    val post = remember { PostRepo.getFeaturedPost() }
+    JetnewsTheme(isDarkTheme = true) {
+        FeaturedPost(post = post)
+    }
 }
 
 @Preview("HomeOld")

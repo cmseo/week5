@@ -8,8 +8,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.codelab.theming.R
 
-class Typography {
-}
+/*class Typography {
+}*/
 
 private val Montserrat = FontFamily(
     Font(R.font.montserrat_regular),
