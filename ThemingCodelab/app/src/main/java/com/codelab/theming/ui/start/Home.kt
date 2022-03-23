@@ -54,13 +54,44 @@ import androidx.compose.ui.unit.dp
 import com.codelab.theming.R
 import com.codelab.theming.data.Post
 import com.codelab.theming.data.PostRepo
+import com.codelab.theming.ui.start.theme.JetnewsTheme
 import java.util.Locale
+
+@Composable
+fun HomeOld() {
+    val featured = remember { PostRepo.getFeaturedPost() }
+    val posts = remember { PostRepo.getPosts() }
+    MaterialTheme {
+        Scaffold(
+            topBar = { AppBar() }
+        ) { innerPadding ->
+            LazyColumn(contentPadding = innerPadding) {
+                item {
+                    Header(stringResource(R.string.top))
+                }
+                item {
+                    FeaturedPost(
+                        post = featured,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+                item {
+                    Header(stringResource(R.string.popular))
+                }
+                items(posts) { post ->
+                    PostItem(post = post)
+                    Divider(startIndent = 72.dp)
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun Home() {
     val featured = remember { PostRepo.getFeaturedPost() }
     val posts = remember { PostRepo.getPosts() }
-    MaterialTheme {
+    JetnewsTheme {
         Scaffold(
             topBar = { AppBar() }
         ) { innerPadding ->
@@ -213,9 +244,19 @@ private fun PostItemPreview() {
     }
 }
 
+
 @Preview("Featured Post")
 @Composable
 private fun FeaturedPostPreview() {
+    val post = remember { PostRepo.getFeaturedPost() }
+    JetnewsTheme {
+        FeaturedPost(post = post)
+    }
+}
+
+@Preview("Featured Post Old")
+@Composable
+private fun FeaturedPostPreviewOld() {
     val post = remember { PostRepo.getFeaturedPost() }
     FeaturedPost(post = post)
 }
@@ -224,4 +265,10 @@ private fun FeaturedPostPreview() {
 @Composable
 private fun HomePreview() {
     Home()
+}
+
+@Preview("HomeOld")
+@Composable
+private fun HomeOldPreview() {
+    HomeOld()
 }
