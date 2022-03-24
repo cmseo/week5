@@ -34,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -41,6 +42,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.codelab.theming.R
@@ -166,7 +168,7 @@ fun Header(
 ) {
     Surface(
         color = MaterialTheme.colors.onSurface.copy(alpha = 0.1f),
-        contentColor = contentColorFor(backgroundColor = MaterialTheme.colors.primary),
+        contentColor = MaterialTheme.colors.primary,
         modifier = modifier
         ) {
         Text(
@@ -175,7 +177,8 @@ fun Header(
                 .fillMaxWidth()
 //            .background(Color.LightGray)
 //                .semantics { heading() }
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            style = MaterialTheme.typography.subtitle2
         )
     }
 }
@@ -223,16 +226,23 @@ private fun PostMetadata(
 ) {
     val divider = "  •  "
     val tagDivider = "  "
+
+     val tagStyle = MaterialTheme.typography.overline.toSpanStyle().copy(
+         background = MaterialTheme.colors.primary.copy(alpha = 0.1f)
+     )
+
     val text = buildAnnotatedString {
         append(post.metadata.date)
         append(divider)
         append(stringResource(R.string.read_time, post.metadata.readTimeMinutes))
         append(divider)
-        post.tags.forEachIndexed { index, tag ->
-            if (index != 0) {
-                append(tagDivider)
+        withStyle(tagStyle) {
+            post.tags.forEachIndexed { index, tag ->
+                if (index != 0) {
+                    append(tagDivider)
+                }
+                append(" ${tag.uppercase(Locale.getDefault())} ")
             }
-            append(" ${tag.uppercase(Locale.getDefault())} ")
         }
     }
     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
@@ -249,6 +259,7 @@ fun PostItem(
     post: Post,
     modifier: Modifier = Modifier
 ) {
+    // 그림 + 텍스트1, 텍스트2
     ListItem(
         modifier = modifier
             .clickable { /* todo */ }
@@ -256,16 +267,17 @@ fun PostItem(
         icon = {
             Image(
                 painter = painterResource(post.imageThumbId),
+                modifier = Modifier.clip(shape = MaterialTheme.shapes.small),
                 contentDescription = null
             )
         },
-        text = {
-            Text(text = post.title)
-        },
+
         secondaryText = {
             PostMetadata(post)
         }
-    )
+    ) {
+        Text(text = post.title)
+    }
 }
 
 @Preview("Post Item")
