@@ -85,6 +85,7 @@ fun HomeOld() {
 fun Home() {
     val featured = remember { PostRepo.getFeaturedPost() }
     val posts = remember { PostRepo.getPosts() }
+
     JetnewsTheme {
         Scaffold(
             topBar = { AppBar() }

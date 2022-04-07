@@ -31,3 +31,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+/**
+ * 회고
+ * 이선주C
+ *  1) 제대로 함수형 reactive한 앱을 구현할 수 있을 것 같다. 소름.
+ * 윤나리S
+ *  1) MaterialTheme 단순히 갖다가 쓰는 줄 알았는데, 제대로 이해하니 유용한 것 같다.
+ * 서창무S
+ *  1) 코드 이해하기 좋다.
+ *
+ *
+ */
